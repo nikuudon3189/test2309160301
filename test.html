@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Scroll Animation</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/GLTFLoader.js"></script>
+    <script>
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        var loader = new THREE.GLTFLoader();
+        var model;
+
+        loader.load('./hoshimachi3.gltf', function (gltf) {
+            model = gltf.scene;
+            scene.add(model);
+        });
+
+        var scrollY = 0;
+
+        window.addEventListener("scroll", function () {
+            scrollY = window.scrollY;
+        });
+
+        var animate = function () {
+            requestAnimationFrame(animate);
+
+            // 3DオブジェクトのZ軸回転
+            if (model) {
+                model.rotation.z = scrollY * 0.005;
+            }
+
+            // カメラのZ軸回転（オブジェクトを追いかける）
+            camera.rotation.z = scrollY * 0.001;
+
+            renderer.render(scene, camera);
+        };
+
+        animate();
+    </script>
+</body>
+</html>
