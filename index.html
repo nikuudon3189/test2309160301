@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>3Ds Scroll Animation</title>
+    <title>3D Scroll Animation</title>
     <style>
         body {
             margin: 0;
@@ -12,41 +12,42 @@
 </head>
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/GLTFLoader.js"></script>
     <script>
+        // シーンの作成
         var scene = new THREE.Scene();
+
+        // カメラの作成
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 5;
 
+        // レンダラーの作成
         var renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        var loader = new THREE.GLTFLoader();
-        var model;
+        // 3Dモデルの作成（ここでは立方体を使用）
+        var geometry = new THREE.BoxGeometry();
+        var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        var cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
 
-        loader.load('./hoshimachi3.gltf', function (gltf) {
-            model = gltf.scene;
-            scene.add(model);
-        });
-
+        // スクロール時のカメラ位置の変数
         var scrollY = 0;
 
+        // スクロールイベントのリスナーを設定
         window.addEventListener("scroll", function () {
+            // スクロール位置を取得
             scrollY = window.scrollY;
         });
 
+        // レンダリングループの設定
         var animate = function () {
             requestAnimationFrame(animate);
 
-            // 3DオブジェクトのZ軸回転
-            if (model) {
-                model.rotation.z = scrollY * 0.005;
-            }
+            // カメラの位置をスクロールに応じて変更
+            camera.position.y = scrollY * 0.01;
 
-            // カメラのZ軸回転（オブジェクトを追いかける）
-            camera.rotation.z = scrollY * 0.001;
-
+            // レンダリング
             renderer.render(scene, camera);
         };
 
