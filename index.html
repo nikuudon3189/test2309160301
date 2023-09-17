@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>3D Scroll Animation</title>
+    <title>3D Scroll Animation with Light</title>
     <style>
         body {
             margin: 0;
@@ -36,15 +36,18 @@
             scrollY = window.scrollY;
         });
 
+        // DirectionalLight（平行光源）を追加
+        var light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(0, 0, 1); // 光源の位置を設定
+        scene.add(light);
+
         var animate = function () {
             requestAnimationFrame(animate);
 
-            // 3DオブジェクトのZ軸回転
             if (model) {
                 model.rotation.z = scrollY * 0.005;
             }
 
-            // カメラのZ軸回転（オブジェクトを追いかける）
             camera.rotation.z = scrollY * 0.001;
 
             renderer.render(scene, camera);
