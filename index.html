@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>3D Scroll Animation with Light</title>
+    <title>3D Scroll Animation with Light and Background Color</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
+            background-color: #00aaff; /* 背景色を水色に設定 */
         }
     </style>
 </head>
@@ -27,6 +28,7 @@
 
         loader.load('hoshimachi3.gltf', function (gltf) {
             model = gltf.scene;
+            model.scale.set(0.6, 0.6, 0.6); // 3Dモデルの拡大設定
             scene.add(model);
         });
 
